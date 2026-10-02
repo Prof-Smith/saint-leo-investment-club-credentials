@@ -30,8 +30,11 @@ Private evidence and the credential register stay outside GitHub. Only faculty-a
 
 ## Generate a page
 ```bash
-python scripts/generate_credential.py sample-data/approved-credential.csv
+BASE_URL="https://prof-smith.github.io/saint-leo-investment-club-credentials" python scripts/generate_credential.py sample-data/approved-credential.csv
 ```
+
+## Unique issued badges
+The generator writes `assets/issued/<CREDENTIAL_ID>.png`. Each PNG renders the CSV issue date and credential ID, and its QR code encodes the corresponding unique verification-page URL. Re-run the generator whenever an approved record changes.
 
 ## Before production
 Confirm brand approval, official issuer wording, publication-consent language, repository ownership, the final Pages URL, and the authorized approvers.
