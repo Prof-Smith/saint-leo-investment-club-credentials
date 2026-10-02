@@ -1,0 +1,1 @@
+document.querySelector('#verify')?.addEventListener('submit',e=>{e.preventDefault();const id=document.querySelector('#credential').value.trim().toUpperCase();const ok=/^SLIC-(EXP|NET|CMS|LIF)-\d{4}-\d{3}$/.test(id);const msg=document.querySelector('#message');if(!ok){msg.textContent='Check the credential ID format.';return;}window.location.href=`credentials/${id}.html`;});
