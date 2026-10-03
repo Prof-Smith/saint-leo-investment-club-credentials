@@ -1,10 +1,6 @@
 # Issuance checklist
-- [ ] Confirm approved tier and evidence
-- [ ] Confirm recipient's public-name consent
-- [ ] Obtain faculty approval
-- [ ] Assign the next unused credential ID
-- [ ] Add the record to the private register
-- [ ] Generate verification page and issued badge
-- [ ] Test URL and QR code
-- [ ] Record Git commit reference
-- [ ] Send LinkedIn fields to recipient
+1. Confirm faculty approval and publication consent.
+2. Add the approved public record to the CSV.
+3. Run the credential generator.
+4. Verify the HTML page and QR destination.
+5. Commit generated files to the publishing branch.

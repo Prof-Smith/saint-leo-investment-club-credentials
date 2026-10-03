@@ -1,21 +1,20 @@
 #!/usr/bin/env python3
-import csv, os, re, sys
+import csv,os,sys
 from pathlib import Path
 import qrcode
-BASE_URL=os.getenv('BASE_URL','https://USERNAME.github.io/REPOSITORY').rstrip('/')
-TITLES={'EXP':'Finance Explorer','NET':'Investment Networker','CMS':'Capital Markets Scholar','LIF':'Leo Investment Fellow'}
-SLUGS={'EXP':'finance-explorer','NET':'investment-networker','CMS':'capital-markets-scholar','LIF':'leo-investment-fellow'}
-BADGES={'EXP':'finance-explorer-display-v25.png','NET':'investment-networker-display-v25.png','CMS':'capital-markets-scholar-display-v31.jpg','LIF':'leo-investment-fellow-display-v31.jpg'}
-ID_RE=re.compile(r'^SLIC-(EXP|NET|CMS|LIF)-\d{4}-\d{3}$')
-root=Path(__file__).resolve().parents[1]; template=(root/'templates/credential-template.html').read_text(encoding='utf-8'); qrdir=root/'assets/qr'; qrdir.mkdir(exist_ok=True)
-with open(sys.argv[1],newline='',encoding='utf-8') as f:
+ROOT=Path(__file__).resolve().parents[1]
+BASE=os.environ.get('BASE_URL','https://prof-smith.github.io/saint-leo-investment-club-credentials').rstrip('/')
+MAP={
+'finance-explorer':('Finance Explorer','../assets/badges/finance-explorer-display-v31.png','../criteria/finance-explorer.html'),
+'investment-networker':('Investment Networker','../assets/badges/investment-networker-display-v31.png','../criteria/investment-networker.html'),
+'capital-markets-scholar':('Capital Markets Scholar','../assets/badges/capital-markets-scholar-display-v31.jpg','../criteria/capital-markets-scholar.html'),
+'leo-investment-fellow':('Leo Investment Fellow','../assets/badges/leo-investment-fellow-display-v31.jpg','../criteria/leo-investment-fellow.html')}
+tpl=(ROOT/'templates/credential-template.html').read_text()
+with open(sys.argv[1],newline='',encoding='utf-8-sig') as f:
  for row in csv.DictReader(f):
-  typ=row['credential_type'].strip().upper(); cid=row['credential_id'].strip().upper()
-  if typ not in TITLES or not ID_RE.fullmatch(cid) or cid.split('-')[1]!=typ: raise ValueError(cid)
-  url=f'{BASE_URL}/credentials/{cid}.html'
-  qr=qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M,box_size=8,border=4); qr.add_data(url); qr.make(fit=True)
-  qr.make_image(fill_color='black',back_color='white').save(qrdir/f'{cid}-qr-v31.png')
-  html=template
-  vals={'{{CREDENTIAL_TITLE}}':TITLES[typ],'{{CREDENTIAL_ID}}':cid,'{{PUBLIC_NAME}}':row['public_name'],'{{ISSUE_DATE}}':row['issue_date'],'{{STATUS}}':row['status'],'{{CRITERIA_URL}}':f'../criteria/{SLUGS[typ]}.html','{{BADGE_URL}}':f'../assets/badges/{BADGES[typ]}','{{QR_URL}}':f'../assets/qr/{cid}-qr-v31.png'}
-  for k,v in vals.items(): html=html.replace(k,v)
-  (root/'credentials'/f'{cid}.html').write_text(html,encoding='utf-8')
+  typ=row['credential_type'].strip(); cid=row['credential_id'].strip().upper(); title,badge,criteria=MAP[typ]
+  url=f'{BASE}/credentials/{cid}.html'; qrname=f'{cid}-qr-v31.png'; qrcode.make(url).save(ROOT/'assets/qr'/qrname)
+  vals={'TITLE':title,'CREDENTIAL_ID':cid,'PUBLIC_NAME':row['public_name'].strip(),'ISSUE_DATE':row['issue_date'].strip(),'STATUS':row['status'].strip().upper(),'BADGE_URL':badge,'QR_URL':f'../assets/qr/{qrname}','CRITERIA_URL':criteria}
+  html=tpl
+  for k,v in vals.items(): html=html.replace('{{'+k+'}}',v)
+  (ROOT/'credentials'/f'{cid}.html').write_text(html)
