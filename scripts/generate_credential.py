@@ -5,10 +5,10 @@ import qrcode
 ROOT=Path(__file__).resolve().parents[1]
 BASE=os.environ.get('BASE_URL','https://prof-smith.github.io/saint-leo-investment-club-credentials').rstrip('/')
 MAP={
-'finance-explorer':('Finance Explorer','../assets/badges/finance-explorer-display-v31.png','../criteria/finance-explorer.html'),
-'investment-networker':('Investment Networker','../assets/badges/investment-networker-display-v31.png','../criteria/investment-networker.html'),
-'capital-markets-scholar':('Capital Markets Scholar','../assets/badges/capital-markets-scholar-display-v31.jpg','../criteria/capital-markets-scholar.html'),
-'leo-investment-fellow':('Leo Investment Fellow','../assets/badges/leo-investment-fellow-display-v31.jpg','../criteria/leo-investment-fellow.html')}
+'finance-explorer':('Finance Explorer','../assets/badges/finance-explorer-landing-v38.png','../criteria/finance-explorer.html'),
+'investment-networker':('Investment Networker','../assets/badges/investment-networker-landing-v38.png','../criteria/investment-networker.html'),
+'capital-markets-scholar':('Capital Markets Scholar','../assets/badges/capital-markets-scholar-landing-v38.png','../criteria/capital-markets-scholar.html'),
+'leo-investment-fellow':('Leo Investment Fellow','../assets/badges/leo-investment-fellow-landing-v38.png','../criteria/leo-investment-fellow.html')}
 tpl=(ROOT/'templates/credential-template.html').read_text()
 with open(sys.argv[1],newline='',encoding='utf-8-sig') as f:
  for row in csv.DictReader(f):
